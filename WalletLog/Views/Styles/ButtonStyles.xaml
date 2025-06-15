@@ -1,0 +1,227 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!--  ページ送りボタンのスタイル  -->
+    <Style x:Key="PagingButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Foreground" Value="Green" />
+        <Setter Property="FontSize" Value="30" />
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+        <Setter Property="Width" Value="40" />
+    </Style>
+
+    <!--  パネル型ボタン  -->
+    <Style x:Key="PanelButtonStyle" TargetType="Button">
+        <!--  全景：青みどり  -->
+        <Setter Property="Foreground" Value="#FF3D7EA6" />
+
+        <!--  背景：クリーム色基調  -->
+        <Setter Property="Background" Value="#FFFAFAFA" />
+
+        <!--  カーソル反応：手のマーク  -->
+        <Setter Property="Cursor" Value="Hand" />
+
+        <!--  サイズ (40*40)  -->
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Height" Value="40" />
+
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+        <Setter Property="FontSize" Value="30" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        x:Name="border"
+                        Padding="{TemplateBinding Padding}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="8"
+                        SnapsToDevicePixels="True">
+
+                        <!--  背景にグラデーション  -->
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <!--  上：明るめ  -->
+                                <GradientStop Offset="0.0" Color="#FFFFFFFF" />
+                                <!--  下：少し暗め  -->
+                                <GradientStop Offset="1.0" Color="#FFF0F0F0" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+
+                        <!--  枠線  -->
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <!--  上：明るめ赤  -->
+                                <GradientStop Offset="0.0" Color="#FFDD8888" />
+                                <!--  下：濃い赤  -->
+                                <GradientStop Offset="1.0" Color="#FFAA4444" />
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
+
+                        <!--  影でふわっと浮かせる  -->
+                        <Border.Effect>
+                            <DropShadowEffect
+                                BlurRadius="6"
+                                Opacity="0.3"
+                                ShadowDepth="0" />
+                        </Border.Effect>
+
+                        <!--  少し浮いた位置  -->
+                        <Border.RenderTransform>
+                            <TranslateTransform Y="-1.5" />
+                        </Border.RenderTransform>
+
+                        <!--  中身  -->
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+
+                    <!--  状態ごとのトリガー  -->
+                    <ControlTemplate.Triggers>
+                        <!--  押下で沈めて影を薄く  -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform Y="1" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect
+                                        BlurRadius="2"
+                                        Opacity="0.05"
+                                        ShadowDepth="0" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!--  フォーカスで枠線を少し強調  -->
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="DodgerBlue" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--  背景なしの補助ボタン  -->
+    <Style x:Key="SupportButtonStyle" TargetType="Button">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="Foreground" Value="Green" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+        <Setter Property="Width" Value="20" />
+        <Setter Property="Height" Value="20" />
+    </Style>
+
+    <!--  カレンダー選択ボタン  -->
+    <Style x:Key="BaseStyle_CallendarSelect" TargetType="Button">
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="15" />
+
+        <Setter Property="Cursor" Value="Hand" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        x:Name="border"
+                        Padding="{TemplateBinding Padding}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="8"
+                        SnapsToDevicePixels="True">
+
+                        <!--  背景にグラデーション  -->
+                        <Border.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <!--  上：明るめ  -->
+                                <GradientStop Offset="0.0" Color="#FFFFFFFF" />
+                                <!--  下：少し暗め  -->
+                                <GradientStop Offset="1.0" Color="#FFF0F0F0" />
+                            </LinearGradientBrush>
+                        </Border.Background>
+
+                        <!--  枠線  -->
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <!--  上：明るめ赤  -->
+                                <GradientStop Offset="0.0" Color="#FFDD8888" />
+                                <!--  下：濃い赤  -->
+                                <GradientStop Offset="1.0" Color="#FFAA4444" />
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
+
+                        <!--  影でふわっと浮かせる  -->
+                        <Border.Effect>
+                            <DropShadowEffect
+                                BlurRadius="6"
+                                Opacity="0.3"
+                                ShadowDepth="0" />
+                        </Border.Effect>
+
+                        <!--  少し浮いた位置  -->
+                        <Border.RenderTransform>
+                            <TranslateTransform Y="-1.5" />
+                        </Border.RenderTransform>
+
+                        <!--  中身  -->
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+
+                    <!--  状態ごとのトリガー  -->
+                    <ControlTemplate.Triggers>
+                        <!--  押下で沈めて影を薄く  -->
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="RenderTransform">
+                                <Setter.Value>
+                                    <TranslateTransform Y="1" />
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect
+                                        BlurRadius="2"
+                                        Opacity="0.05"
+                                        ShadowDepth="0" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+
+                        <!--  フォーカスで枠線を少し強調  -->
+                        <Trigger Property="IsKeyboardFocused" Value="True">
+                            <Setter TargetName="border" Property="BorderBrush" Value="DodgerBlue" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
+        <!--  押下不可時の表示  -->
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="LightGray" />
+                <Setter Property="Foreground" Value="DarkGray" />
+                <Setter Property="Opacity" Value="0.6" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--  曜日選択ボタン  -->
+    <Style
+        x:Key="CallendarSelectDayButtonStyle"
+        BasedOn="{StaticResource BaseStyle_CallendarSelect}"
+        TargetType="Button">
+        <Setter Property="Height" Value="25" />
+    </Style>
+
+    <!--  日にち選択ボタン  -->
+    <Style
+        x:Key="CallendarSelectDateButtonStyle"
+        BasedOn="{StaticResource BaseStyle_CallendarSelect}"
+        TargetType="Button">
+        <Setter Property="Height" Value="60" />
+    </Style>
+
+
+</ResourceDictionary>

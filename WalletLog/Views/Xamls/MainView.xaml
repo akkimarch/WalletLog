@@ -1,0 +1,238 @@
+﻿<Window
+    x:Class="WalletLog.Views.MainView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:WalletLog"
+    xmlns:vm="clr-namespace:WalletLog.ViewModels"
+    Title="WalletLog"
+    Width="800"
+    Height="600"
+    Closing="Window_Closing"
+    ResizeMode="NoResize">
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0" Color="#FFFFF0F5" />
+            <!--  ラベンダーブラッシュ  -->
+            <GradientStop Offset="1" Color="#FFFFE4E1" />
+            <!--  ミスティローズ  -->
+        </LinearGradientBrush>
+    </Window.Background>
+
+
+    <!--  コンバーターリソース  -->
+    <Window.Resources>
+        <BounceEase
+            x:Key="BounceEase"
+            Bounces="2"
+            Bounciness="2"
+            EasingMode="EaseOut" />
+        <!--  バウンドするアニメーション  -->
+        <BackEase
+            x:Key="BackEaseOut"
+            Amplitude="0.5"
+            EasingMode="EaseOut" />
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <!--  日付とナビゲーション  -->
+            <RowDefinition Height="Auto" />
+            <!--  タスクリスト  -->
+            <RowDefinition Height="*" />
+            <!--  フッター（進捗）  -->
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--  上部:日付切り替え(カレンダー)  -->
+        <Grid>
+            <Button
+                x:Name="CalendarIconButton"
+                Grid.Row="0"
+                HorizontalAlignment="Left"
+                Command="{Binding OpenCalendarCommand}"
+                Content="&#xE787;"
+                Style="{StaticResource PanelButtonStyle}"
+                ToolTip="カレンダー表示" />
+        </Grid>
+
+        <!--  上部：日付切り替え  -->
+        <StackPanel
+            Grid.Row="0"
+            Margin="0,0,0,10"
+            HorizontalAlignment="Center"
+            Orientation="Horizontal">
+
+            <!--  ←ボタン  -->
+            <Button
+                Command="{Binding PreviousDayCommand}"
+                Content="&#xE760;"
+                Style="{StaticResource PagingButtonStyle}" />
+
+            <Grid>
+                <TextBlock
+                    x:Name="CalendarSelect"
+                    Margin="10"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    Text="{Binding CurrentDate, StringFormat='{}{0:yyyy/MM/dd}'}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding CalendarSelectCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBlock>
+
+                <Popup
+                    AllowsTransparency="True"
+                    IsOpen="{Binding IsCalendarOpen}"
+                    Placement="Right"
+                    PlacementTarget="{x:Reference CalendarSelect}"
+                    StaysOpen="False">
+                    <Border
+                        Padding="5"
+                        Background="White"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                        <Calendar SelectedDate="{Binding CurrentDate, Mode=TwoWay}" />
+                    </Border>
+                </Popup>
+            </Grid>
+
+            <!--  →ボタン  -->
+            <Button
+                Command="{Binding NextDayCommand}"
+                Content="&#xE761;"
+                Style="{StaticResource PagingButtonStyle}" />
+        </StackPanel>
+
+        <!--  上部：ボタン配置  -->
+        <StackPanel
+            Grid.Row="0"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+
+            <!--  家マークのボタン 固定費入力  -->
+            <Button
+                Command="{Binding OpenFixedCostsSettingCommand}"
+                Content="&#xE80F;"
+                Style="{StaticResource PanelButtonStyle}"
+                ToolTip="固定費" />
+
+            <!--  貯金箱ボタン  -->
+            <Button
+                Margin="0,0,1,0"
+                Command="{Binding OpenBankCommand}"
+                Style="{StaticResource PanelButtonStyle}">
+
+                <StackPanel Orientation="Horizontal">
+                    <Image
+                        Width="40"
+                        Height="40"
+                        Cursor="Hand"
+                        RenderOptions.BitmapScalingMode="HighQuality"
+                        Source="pack://application:,,,/Views/Images/Banks/Bank.png"
+                        ToolTip="" />
+                </StackPanel>
+            </Button>
+
+            <!--  上部：設定ボタン  -->
+            <Button
+                Command="{Binding OpenSettingCommand}"
+                Content="&#xE713;"
+                Style="{StaticResource PanelButtonStyle}"
+                ToolTip="設定" />
+        </StackPanel>
+
+        <!--  中央：金額入力リスト  -->
+        <ListBox
+            Grid.Row="1"
+            Margin="0,0,0,0"
+            dd:DragDrop.DropHandler="{Binding}"
+            dd:DragDrop.IsDragSource="True"
+            dd:DragDrop.IsDropTarget="True"
+            dd:DragDrop.UseDefaultDragAdorner="True"
+            BorderThickness="1"
+            ItemsSource="{Binding CurrentDaySet.DailyConsumption}"
+            ScrollViewer.VerticalScrollBarVisibility="Auto">
+            <ListBox.Style>
+                <Style TargetType="ListBox">
+                    <Setter Property="Background" Value="AliceBlue" />
+                    <Setter Property="BorderBrush" Value="White" />
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Margin" Value="0" />
+                </Style>
+            </ListBox.Style>
+
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <!--  アキ  -->
+                            <ColumnDefinition Width="40" />
+                            <!--  カテゴリ名  -->
+                            <ColumnDefinition Width="*" MinWidth="300" />
+                            <!--  金額入力  -->
+                            <ColumnDefinition Width="60" />
+                            <!--  アキ  -->
+                            <ColumnDefinition Width="80" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  カテゴリ名  -->
+                        <ComboBox
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Text="{Binding CategoryName}" />
+
+                        <!--  金額入力  -->
+                        <TextBox
+                            Grid.Column="2"
+                            Margin="10,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding Amount}" />
+
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!--  下部  -->
+        <Grid Grid.Row="2" Margin="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="460" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel
+                Grid.Column="3"
+                Margin="0,0,1,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Orientation="Horizontal">
+                <Button
+                    Command="{Binding OpenReadReceiptCommand}"
+                    Content="&#xE70B;"
+                    Style="{StaticResource PanelButtonStyle}"
+                    ToolTip="レシート読み取り" />
+
+                <Button
+                    Command="{Binding RegistExpenceCommand}"
+                    Content="&#xE74E;"
+                    Style="{StaticResource PanelButtonStyle}"
+                    ToolTip="登録" />
+            </StackPanel>
+        </Grid>
+
+
+
+
+    </Grid>
+
+
+</Window>

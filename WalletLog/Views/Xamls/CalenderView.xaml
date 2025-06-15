@@ -1,0 +1,242 @@
+﻿<Window
+    x:Class="WalletLog.Views.CalendarView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:WalletLog"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:vm="clr-namespace:WalletLog.ViewModels"
+    Title="カレンダー"
+    Width="800"
+    Height="600"
+    ResizeMode="NoResize">
+
+    <Window.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Offset="0" Color="Ivory" />
+            <GradientStop Offset="1" Color="White " />
+        </LinearGradientBrush>
+    </Window.Background>
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
+
+    <DockPanel Margin="10">
+        <!--  年月表示と月送りボタン  -->
+        <StackPanel
+            Margin="0,0,0,10"
+            HorizontalAlignment="Center"
+            DockPanel.Dock="Top"
+            Orientation="Horizontal">
+
+            <!--  ←ボタン  -->
+            <Button
+                Command="{Binding PreviousMonthCommand}"
+                Content="&#xE760;"
+                Style="{StaticResource PagingButtonStyle}" />
+
+            <!--  日付テキスト  -->
+            <Grid>
+                <TextBlock
+                    x:Name="CalendarSelect"
+                    Margin="10,0"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Text="{Binding CurrentMonthText}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding CalendarSelectCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBlock>
+                <Popup
+                    AllowsTransparency="True"
+                    IsOpen="{Binding IsCalendarOpen}"
+                    Placement="Right"
+                    PlacementTarget="{x:Reference CalendarSelect}"
+                    StaysOpen="False">
+                    <Border
+                        Padding="10"
+                        Background="White"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+
+                        <StackPanel>
+                            <!--  年選択  -->
+                            <ComboBox
+                                Width="100"
+                                Margin="0,0,0,5"
+                                ItemsSource="{Binding Years}"
+                                SelectedItem="{Binding SelectedYear, Mode=TwoWay}" />
+
+                            <!--  月選択  -->
+                            <ComboBox
+                                Width="100"
+                                ItemsSource="{Binding Months}"
+                                SelectedItem="{Binding SelectedMonth, Mode=TwoWay}" />
+
+                            <!--  決定ボタン  -->
+                            <!--
+                            <Button Content="決定" Margin="0,10,0,0"
+                        Command="{Binding ConfirmDateCommand}"/>-->
+                        </StackPanel>
+                    </Border>
+                </Popup>
+            </Grid>
+
+            <!--  →ボタン  -->
+            <Button
+                Command="{Binding NextMonthCommand}"
+                Content="&#xE761;"
+                Style="{StaticResource PagingButtonStyle}" />
+
+        </StackPanel>
+
+        <!--  曜日ヘッダー  -->
+        <UniformGrid
+            Margin="0,0,0,5"
+            Columns="7"
+            DockPanel.Dock="Top">
+            <TextBlock
+                FontWeight="Bold"
+                Text="日"
+                TextAlignment="Center" />
+            <TextBlock
+                FontWeight="Bold"
+                Text="月"
+                TextAlignment="Center" />
+            <TextBlock
+                FontWeight="Bold"
+                Text="火"
+                TextAlignment="Center" />
+            <TextBlock
+                FontWeight="Bold"
+                Text="水"
+                TextAlignment="Center" />
+            <TextBlock
+                FontWeight="Bold"
+                Text="木"
+                TextAlignment="Center" />
+            <TextBlock
+                FontWeight="Bold"
+                Text="金"
+                TextAlignment="Center" />
+            <TextBlock
+                FontWeight="Bold"
+                Text="土"
+                TextAlignment="Center" />
+        </UniformGrid>
+
+        <!--  カレンダー本体  -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ItemsControl ItemsSource="{Binding CalendarDates}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="7" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Margin="2"
+                            BorderBrush="AliceBlue"
+                            BorderThickness="1"
+                            CornerRadius="4">
+
+                            <StackPanel
+                                Width="100"
+                                Height="80"
+                                Orientation="Vertical">
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding calendarDate.Date}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+
+                                <!--  日付とメモアイコン  -->
+                                <Border
+                                    Margin="0"
+                                    BorderBrush="AliceBlue"
+                                    BorderThickness="1"
+                                    CornerRadius="4">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Style.Triggers>
+                                                <!--  今日なら背景色を変える  -->
+                                                <DataTrigger Binding="{Binding calendarDate.Date}" Value="{x:Static sys:DateTime.Today}">
+                                                    <Setter Property="Background" Value="LightGoldenrodYellow" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+
+                                    <Grid Height="25">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="60" />
+                                            <ColumnDefinition Width="40" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock
+                                            Grid.Column="0"
+                                            Width="60"
+                                            Height="25"
+                                            Margin="0"
+                                            Padding="30,0,0,0"
+                                            Background="Transparent"
+                                            FontSize="20"
+                                            Text="{Binding DisplayDay}"
+                                            TextAlignment="Center" />
+
+
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Width="25"
+                                            Height="25"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Top"
+                                            FontFamily="Segoe MDL2 Assets"
+                                            FontSize="20"
+                                            Foreground="Gray"
+                                            Text="&#xE70B;"
+                                            Visibility="{Binding visibleMemo, Converter={StaticResource BoolToVis}}" />
+
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="MouseLeftButtonUp">
+                                                <i:InvokeCommandAction Command="{Binding DataContext.OpenMemoCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </Grid>
+                                </Border>
+
+                                <!--  スタンプ  -->
+                                <Grid Width="59" Height="59">
+                                    <Image
+                                        Margin="4"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Stretch"
+                                        Source="pack://application:,,,/Views/Images/Stamps/Pencil4040.png"
+                                        Stretch="UniformToFill"
+                                        Visibility="{Binding isStamped, Converter={StaticResource BoolToVis}}" />
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </Grid>
+    </DockPanel>
+</Window>

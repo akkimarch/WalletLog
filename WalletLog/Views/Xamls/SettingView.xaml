@@ -1,0 +1,201 @@
+﻿<Window
+    x:Class="WalletLog.Views.SettingView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dd="clr-namespace:GongSolutions.Wpf.DragDrop;assembly=GongSolutions.Wpf.DragDrop"
+    xmlns:local="clr-namespace:WalletLog"
+    xmlns:vm="clr-namespace:WalletLog.ViewModels"
+    x:Name="RootWindow"
+    Title="Settings"
+    Width="550"
+    Height="700"
+    Style="{StaticResource SubWindowStyle}">
+
+    <Window.Resources>
+        <DropShadowEffect
+            x:Key="DropShadowEffect"
+            BlurRadius="4"
+            Opacity="0.2"
+            ShadowDepth="2" />
+    </Window.Resources>
+
+    <DockPanel Margin="10">
+        <!--  上部：タイトルと追加ボタン  -->
+
+        <Grid Margin="0,0,0,5" DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <!--  左スペース  -->
+                <ColumnDefinition Width="*" />
+                <!--  中央タイトル  -->
+                <ColumnDefinition Width="Auto" />
+                <!--  右スペース  -->
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="20"
+                FontWeight="Bold"
+                Text="タスク設定" />
+
+            <Button
+                Grid.Column="2"
+                Margin="0,0,10,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Command="{Binding AddTaskCommand}"
+                Content="&#xE710;"
+                FontWeight="Bold"
+                Style="{StaticResource SupportButtonStyle}"
+                ToolTip="タスク追加" />
+        </Grid>
+
+        <Grid Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <!--  スクロール領域  -->
+                <RowDefinition Height="Auto" />
+                <!--  ボタン  -->
+            </Grid.RowDefinitions>
+
+            <ListBox
+                dd:DragDrop.DropHandler="{Binding}"
+                dd:DragDrop.IsDragSource="True"
+                dd:DragDrop.IsDropTarget="True"
+                dd:DragDrop.UseDefaultDragAdorner="True"
+                local:AutoScrollBehavior.EnableAutoScroll="True"
+                Background="Transparent"
+                BorderThickness="0"
+                ItemsSource="{Binding TaskSettings}"
+                ScrollViewer.VerticalScrollBarVisibility="Auto">
+
+                <ListBox.Resources>
+                    <!--  軽い影の効果  -->
+                    <DropShadowEffect
+                        x:Key="CardShadow"
+                        BlurRadius="6"
+                        Opacity="0.15"
+                        ShadowDepth="2" />
+                </ListBox.Resources>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Margin="8"
+                            Padding="10"
+                            Background="White"
+                            BorderBrush="#DDD"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            Effect="{StaticResource CardShadow}">
+
+                            <StackPanel Width="400" Height="80">
+                                <!--  上段：タスク名・王冠・削除  -->
+                                <DockPanel Margin="0,0,0,5" LastChildFill="False">
+                                    <!--  王冠  -->
+                                    <StackPanel
+                                        Width="25"
+                                        Height="25"
+                                        Margin="0,0,8,0"
+                                        DockPanel.Dock="Left"
+                                        Orientation="Vertical">
+                                        <!--<Image Source="" />-->
+
+                                        <!--<TextBlock Text="{Binding taskItem.DaysCompleted, Converter={StaticResource IntToCompletedDaysString}}" />-->
+                                    </StackPanel>
+
+                                    <!--  タスク名  -->
+                                    <TextBox
+                                        Width="320"
+                                        Margin="0,0,5,0"
+                                        Padding="4"
+                                        VerticalAlignment="Center"
+                                        DockPanel.Dock="Left"
+                                        FontSize="14"
+                                        Text="{Binding taskItem.Name, UpdateSourceTrigger=PropertyChanged}" />
+
+                                    <!--  削除ボタン  -->
+                                    <Button
+                                        Margin="4,0,0,0"
+                                        Command="{Binding DataContext.RemoveTaskCommand, ElementName=RootWindow}"
+                                        CommandParameter="{Binding}"
+                                        Content="&#xE738;"
+                                        DockPanel.Dock="Right"
+                                        Style="{StaticResource SupportButtonStyle}"
+                                        ToolTip="タスク削除" />
+                                </DockPanel>
+
+                                <!--  下段：ポイント / 日付 / 曜日  -->
+                                <StackPanel Width="400" Height="80">
+                                    <DockPanel Margin="0,0,0,5" LastChildFill="False">
+
+                                        <!--  margin  -->
+                                        <TextBlock
+                                            Width="25"
+                                            Margin="0,0,8,0"
+                                            DockPanel.Dock="Left"
+                                            Text="" />
+
+                                        <!--  カレンダー表示  -->
+                                        <Button
+                                            x:Name="RootDayOrDate"
+                                            Margin="0,0,10,0"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding DataContext.OpenSelectCalendarCommand, ElementName=RootWindow}"
+                                            CommandParameter="{Binding}"
+                                            Content="&#xE787;"
+                                            Style="{StaticResource PanelButtonStyle}"
+                                            ToolTip="日にち・曜日を指定できます" />
+
+
+                                        <!--  日にち・曜日設定内容表示  -->
+                                        <TextBlock MinWidth="100" Text="{Binding SelectedDaysDescription}" />
+
+                                        <StackPanel Orientation="Vertical">
+                                            <!--  ボーナス設定チェック  -->
+                                            <CheckBox
+                                                Margin="10,0,0,5"
+                                                Content="スタートアップボーナスを設定"
+                                                IsChecked="{Binding IsBonusEnabled}">
+                                                <ToolTipService.ToolTip>
+                                                    <TextBlock MaxWidth="230" TextWrapping="Wrap">
+                                                        ボーナスポイント(5pt=1スタンプ)を設定できます。
+                                                        10日間連続で達成するまで付与されます。
+                                                    </TextBlock>
+                                                </ToolTipService.ToolTip>
+                                            </CheckBox>
+                                            <!--  ポイント  -->
+                                            <StackPanel Orientation="Horizontal">
+
+                                                <ComboBox
+                                                    Width="40"
+                                                    Margin="10,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Background="Transparent"
+                                                    BorderThickness="0"
+                                                    ItemsSource="{Binding DataContext.PointChoices, ElementName=RootWindow}"
+                                                    SelectedItem="{Binding taskItem.PointValue, Mode=TwoWay}" />
+
+                                                <TextBlock
+                                                    Margin="4,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    Text="pt" />
+                                            </StackPanel>
+
+                                        </StackPanel>
+
+                                    </DockPanel>
+                                </StackPanel>
+
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+        </Grid>
+    </DockPanel>
+</Window>
+

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletLog", "WalletLog\WalletLog.csproj", "{0347DD0F-F204-1789-B409-714923AA3691}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0347DD0F-F204-1789-B409-714923AA3691}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0347DD0F-F204-1789-B409-714923AA3691}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0347DD0F-F204-1789-B409-714923AA3691}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0347DD0F-F204-1789-B409-714923AA3691}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7E7DCA7B-785B-454F-8928-ED7CE7ED9977}
+	EndGlobalSection
+EndGlobal

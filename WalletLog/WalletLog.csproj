@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon></ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Views\Images\Crowns\**" />
+    <Compile Remove="Views\Images\Medals\**" />
+    <Compile Remove="Views\Images\PresentBoxes\**" />
+    <Compile Remove="Views\Images\Progresses\**" />
+    <Compile Remove="Views\Images\StampBooks\**" />
+    <Compile Remove="Views\Images\Stamps\**" />
+    <EmbeddedResource Remove="Views\Images\Crowns\**" />
+    <EmbeddedResource Remove="Views\Images\Medals\**" />
+    <EmbeddedResource Remove="Views\Images\PresentBoxes\**" />
+    <EmbeddedResource Remove="Views\Images\Progresses\**" />
+    <EmbeddedResource Remove="Views\Images\StampBooks\**" />
+    <EmbeddedResource Remove="Views\Images\Stamps\**" />
+    <None Remove="Views\Images\Crowns\**" />
+    <None Remove="Views\Images\Medals\**" />
+    <None Remove="Views\Images\PresentBoxes\**" />
+    <None Remove="Views\Images\Progresses\**" />
+    <None Remove="Views\Images\StampBooks\**" />
+    <None Remove="Views\Images\Stamps\**" />
+    <Page Remove="Views\Images\Crowns\**" />
+    <Page Remove="Views\Images\Medals\**" />
+    <Page Remove="Views\Images\PresentBoxes\**" />
+    <Page Remove="Views\Images\Progresses\**" />
+    <Page Remove="Views\Images\StampBooks\**" />
+    <Page Remove="Views\Images\Stamps\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\Images\Banks\Bank.png" />
+    <None Remove="Views\Images\GoldCrown.png" />
+    <None Remove="Views\Images\crown_gold_forlist.png" />
+    <None Remove="Views\Images\SilverCrown.png" />
+    <None Remove="Views\Images\gold_medal.png" />
+    <None Remove="Views\Images\presentBox_close.png" />
+    <None Remove="Views\Images\presentBox_open.png" />
+    <None Remove="Views\Images\stamp_book.png" />
+    <None Remove="Views\Images\stamp_book_icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="gong-wpf-dragdrop" Version="4.0.0" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.10" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\Images\Banks\Bank.png" />
+  </ItemGroup>
+
+</Project>

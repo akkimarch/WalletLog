@@ -1,0 +1,326 @@
+﻿<Window
+    x:Class="WalletLog.Views.CalendarSelectView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:WalletLog"
+    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:vm="clr-namespace:WalletLog.ViewModels"
+    Title="Calendar"
+    Style="{StaticResource SubWindowStyle}">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </Window.Resources>
+
+    <DockPanel Margin="10">
+        <!--  年月表示と月送りボタン  -->
+        <Grid
+            Width="480"
+            Margin="0,0,0,10"
+            DockPanel.Dock="Top">
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <!--<ColumnDefinition Width="50" />
+                <ColumnDefinition Width="50" />-->
+            </Grid.ColumnDefinitions>
+
+            <Grid
+                Grid.Row="0"
+                Grid.Column="1"
+                HorizontalAlignment="Center">
+
+                <Grid.ColumnDefinitions>
+                    <!--  左ボタン  -->
+                    <ColumnDefinition Width="33" />
+                    <!--  日付テキスト  -->
+                    <ColumnDefinition Width="94" />
+                    <!--  右ボタン  -->
+                    <ColumnDefinition Width="33" />
+                </Grid.ColumnDefinitions>
+
+
+                <Button
+                    Grid.Column="0"
+                    HorizontalAlignment="Right"
+                    Command="{Binding PreviousMonthCommand}"
+                    Content="&#xE760;"
+                    Style="{StaticResource PagingButtonStyle}" />
+
+
+                <TextBlock
+                    x:Name="CalendarSelect"
+                    Grid.Column="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="20"
+                    FontWeight="Bold"
+                    Text="{Binding CurrentMonthText}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonUp">
+                            <i:InvokeCommandAction Command="{Binding CalendarSelectCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </TextBlock>
+                <Popup
+                    AllowsTransparency="True"
+                    IsOpen="{Binding IsCalendarOpen}"
+                    Placement="Right"
+                    PlacementTarget="{x:Reference CalendarSelect}"
+                    StaysOpen="False">
+                    <Border
+                        Padding="10"
+                        Background="White"
+                        BorderBrush="Gray"
+                        BorderThickness="1">
+                        <StackPanel>
+                            <!--  年選択  -->
+                            <ComboBox
+                                Width="100"
+                                ItemsSource="{Binding Years}"
+                                SelectedItem="{Binding SelectedYear, Mode=TwoWay}" />
+
+                            <!--  月選択  -->
+                            <ComboBox
+                                Width="100"
+                                ItemsSource="{Binding Months}"
+                                SelectedItem="{Binding SelectedMonth, Mode=TwoWay}" />
+
+                        </StackPanel>
+                    </Border>
+                </Popup>
+
+                <!--  →ボタン  -->
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Command="{Binding NextMonthCommand}"
+                    Content="&#xE761;"
+                    Style="{StaticResource PagingButtonStyle}" />
+
+            </Grid>
+
+            <!--  トグルスイッチ  -->
+            <Grid Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="40" />
+                </Grid.ColumnDefinitions>
+
+                <mah:ToggleSwitch
+                    Grid.Column="1"
+                    Header="曜日OR選択"
+                    IsOn="{Binding IsSettingOR}" />
+
+                <!--  クリアボタン  -->
+                <Button
+                    Grid.Column="2"
+                    VerticalAlignment="Center"
+                    Command="{Binding ClearSelectCommand}"
+                    Content="&#xE777;"
+                    Style="{StaticResource PanelButtonStyle}"
+                    ToolTip="選択状態クリア" />
+            </Grid>
+        </Grid>
+
+
+        <!--  曜日ヘッダー  -->
+        <UniformGrid
+            MaxWidth="480"
+            Margin="0,0,0,5"
+            Columns="7"
+            DockPanel.Dock="Top">
+            <Button
+                Command="{Binding SelectCommand}"
+                CommandParameter="日"
+                Content="日">
+
+                <Button.Style>
+                    <Style BasedOn="{StaticResource CallendarSelectDayButtonStyle}" TargetType="Button">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSundaySelected}" Value="true">
+                                <Setter Property="Foreground" Value="RoyalBlue" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button
+                Command="{Binding SelectCommand}"
+                CommandParameter="月"
+                Content="月">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource CallendarSelectDayButtonStyle}" TargetType="Button">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMondaySelected}" Value="true">
+                                <Setter Property="Foreground" Value="RoyalBlue" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button
+                Command="{Binding SelectCommand}"
+                CommandParameter="火"
+                Content="火">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource CallendarSelectDayButtonStyle}" TargetType="Button">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsTuesdaySelected}" Value="true">
+                                <Setter Property="Foreground" Value="RoyalBlue" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button
+                Command="{Binding SelectCommand}"
+                CommandParameter="水"
+                Content="水">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource CallendarSelectDayButtonStyle}" TargetType="Button">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsWednesdaySelected}" Value="true">
+                                <Setter Property="Foreground" Value="RoyalBlue" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+
+
+            <Button
+                Command="{Binding SelectCommand}"
+                CommandParameter="木"
+                Content="木">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource CallendarSelectDayButtonStyle}" TargetType="Button">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsThursdaySelected}" Value="true">
+                                <Setter Property="Foreground" Value="RoyalBlue" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+
+            <Button
+                Command="{Binding SelectCommand}"
+                CommandParameter="金"
+                Content="金">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource CallendarSelectDayButtonStyle}" TargetType="Button">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsFridaySelected}" Value="true">
+                                <Setter Property="Foreground" Value="RoyalBlue" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+            <Button
+                Command="{Binding SelectCommand}"
+                CommandParameter="土"
+                Content="土">
+                <Button.Style>
+                    <Style BasedOn="{StaticResource CallendarSelectDayButtonStyle}" TargetType="Button">
+                        <Setter Property="Background" Value="LightGray" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsSaturdaySelected}" Value="true">
+                                <Setter Property="Foreground" Value="RoyalBlue" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+
+        </UniformGrid>
+
+        <!--  カレンダー本体  -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding CalendarDates}" Visibility="{Binding IsCalendarReady, Converter={StaticResource BoolToVisibility}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid MaxWidth="480" Columns="7" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border
+                            Margin="2"
+                            BorderBrush="AliceBlue"
+                            BorderThickness="1"
+                            CornerRadius="4">
+
+                            <Button
+                                Width="60"
+                                Height="60"
+                                Padding="8"
+                                Command="{Binding DataContext.SelectCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                Content="{Binding DisplayDay}"
+                                FontSize="20">
+                                <Button.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource IntArrayToTimeString}">
+                                        <Binding Path="calendarDate.Date.Year" />
+                                        <Binding Path="calendarDate.Date.Month" />
+                                        <Binding Path="DisplayDay" />
+                                    </MultiBinding>
+                                </Button.CommandParameter>
+
+                                <Button.Style>
+                                    <Style BasedOn="{StaticResource CallendarSelectDateButtonStyle}" TargetType="Button">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding calendarDate.Date}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                            </DataTrigger>
+
+                                            <!--  選択日付の色を変える  -->
+                                            <DataTrigger Value="True">
+                                                <DataTrigger.Binding>
+                                                    <MultiBinding Converter="{StaticResource DateTimeArrayToIsEqual}">
+                                                        <Binding Path="calendarDate.Date" />
+                                                        <Binding Path="DataContext.SelectedDate" RelativeSource="{RelativeSource AncestorType=Window}" />
+                                                    </MultiBinding>
+                                                </DataTrigger.Binding>
+                                                <Setter Property="Background" Value="BlueViolet" />
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding calendarDate.Date}" Value="{x:Static sys:DateTime.Today}">
+                                                <Setter Property="Background" Value="LightGoldenrodYellow" />
+                                            </DataTrigger>
+
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </DockPanel>
+</Window>
