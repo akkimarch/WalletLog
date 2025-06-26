@@ -14,7 +14,8 @@ namespace WalletLog.Models
 {
     public class DailySet
     {
-        public ObservableCollection<ExpenseItem> DailyExpenseItems = new ObservableCollection<ExpenseItem>();
+        // ItemsSourceからバインドできるようプロパティとして公開する
+        public ObservableCollection<ExpenseItem> DailyExpenseItems { get; } = new ObservableCollection<ExpenseItem>();
         public DateTime? CurrentDate { get; set; }
 
         public void Clear()
