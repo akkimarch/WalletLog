@@ -40,5 +40,27 @@ namespace WalletLog.Views
             if(vm == null) return;
 
         }
+
+        /// <summary>
+        /// TaskListBoxLoad時イベント
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ExpenceListBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            var vm = this.DataContext;
+
+            foreach (var item in ExpenceListBox.Items)
+            {
+                var listBoxItem = (ListBoxItem)ExpenceListBox.ItemContainerGenerator.ContainerFromItem(item);
+                if (listBoxItem?.ContextMenu != null)
+                {
+                    listBoxItem.ContextMenu.DataContext = vm;
+                }
+            }
+        }
+
+
+
     }
 }

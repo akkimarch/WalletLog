@@ -20,7 +20,6 @@
         </LinearGradientBrush>
     </Window.Background>
 
-
     <!--  コンバーターリソース  -->
     <Window.Resources>
         <BounceEase
@@ -147,6 +146,7 @@
 
         <!--  中央：金額入力リスト  -->
         <ListBox
+            x:Name="ExpenceListBox"
             Grid.Row="1"
             Margin="0,0,0,0"
             dd:DragDrop.DropHandler="{Binding}"
@@ -154,7 +154,8 @@
             dd:DragDrop.IsDropTarget="True"
             dd:DragDrop.UseDefaultDragAdorner="True"
             BorderThickness="1"
-            ItemsSource="{Binding CurrentDaySet.DailyConsumption}"
+            ItemsSource="{Binding CurrentDaySet.DailyExpenseItems}"
+            Loaded="ExpenceListBox_Loaded"
             ScrollViewer.VerticalScrollBarVisibility="Auto">
             <ListBox.Style>
                 <Style TargetType="ListBox">
@@ -186,7 +187,7 @@
                             Grid.Column="1"
                             VerticalAlignment="Center"
                             FontSize="16"
-                            Text="{Binding CategoryName}" />
+                            Text="{Binding Name}" />
 
                         <!--  金額入力  -->
                         <TextBox

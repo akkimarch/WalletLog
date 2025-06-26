@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Versioning;
 using System.Text;
 using System.Threading.Tasks;
+using WalletLog.Models;
 
 namespace WalletLog.ViewModels.Interfaces
 {
@@ -26,12 +27,11 @@ namespace WalletLog.ViewModels.Interfaces
         CustomCommand OpenReadReceiptCommand {get; set; }
         CustomCommand RegistExpenceCommand { get; set; }
 
-        IDisplayDaySet CurrentDaySet { get; }
+        DailySet CurrentDaySet { get; }
 
         DateTime CurrentDate { get; set; }
 
         bool IsCalendarOpen { get; set; }
-
     }
 
     public class DisplayDaySet : IDisplayDaySet

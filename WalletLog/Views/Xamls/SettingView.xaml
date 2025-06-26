@@ -9,6 +9,7 @@
     Title="Settings"
     Width="550"
     Height="700"
+    Closing="Window_Closing"
     Style="{StaticResource SubWindowStyle}">
 
     <Window.Resources>
@@ -38,18 +39,18 @@
                 VerticalAlignment="Center"
                 FontSize="20"
                 FontWeight="Bold"
-                Text="タスク設定" />
+                Text="カテゴリ設定" />
 
             <Button
                 Grid.Column="2"
                 Margin="0,0,10,0"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Center"
-                Command="{Binding AddTaskCommand}"
+                Command="{Binding AddExpenceCommand}"
                 Content="&#xE710;"
                 FontWeight="Bold"
                 Style="{StaticResource SupportButtonStyle}"
-                ToolTip="タスク追加" />
+                ToolTip="カテゴリ追加" />
         </Grid>
 
         <Grid Margin="10">
@@ -68,7 +69,7 @@
                 local:AutoScrollBehavior.EnableAutoScroll="True"
                 Background="Transparent"
                 BorderThickness="0"
-                ItemsSource="{Binding TaskSettings}"
+                ItemsSource="{Binding Expences}"
                 ScrollViewer.VerticalScrollBarVisibility="Auto">
 
                 <ListBox.Resources>
@@ -95,16 +96,13 @@
                                 <!--  上段：タスク名・王冠・削除  -->
                                 <DockPanel Margin="0,0,0,5" LastChildFill="False">
                                     <!--  王冠  -->
-                                    <StackPanel
+                                    <!--<StackPanel
                                         Width="25"
                                         Height="25"
                                         Margin="0,0,8,0"
                                         DockPanel.Dock="Left"
                                         Orientation="Vertical">
-                                        <!--<Image Source="" />-->
-
-                                        <!--<TextBlock Text="{Binding taskItem.DaysCompleted, Converter={StaticResource IntToCompletedDaysString}}" />-->
-                                    </StackPanel>
+                                    </StackPanel>-->
 
                                     <!--  タスク名  -->
                                     <TextBox
@@ -114,12 +112,12 @@
                                         VerticalAlignment="Center"
                                         DockPanel.Dock="Left"
                                         FontSize="14"
-                                        Text="{Binding taskItem.Name, UpdateSourceTrigger=PropertyChanged}" />
+                                        Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
 
                                     <!--  削除ボタン  -->
                                     <Button
                                         Margin="4,0,0,0"
-                                        Command="{Binding DataContext.RemoveTaskCommand, ElementName=RootWindow}"
+                                        Command="{Binding DataContext.RemoveExpenceCommand, ElementName=RootWindow}"
                                         CommandParameter="{Binding}"
                                         Content="&#xE738;"
                                         DockPanel.Dock="Right"
@@ -128,17 +126,22 @@
                                 </DockPanel>
 
                                 <!--  下段：ポイント / 日付 / 曜日  -->
+                                <!--
                                 <StackPanel Width="400" Height="80">
                                     <DockPanel Margin="0,0,0,5" LastChildFill="False">
 
-                                        <!--  margin  -->
+                                -->
+                                <!--  margin  -->
+                                <!--
                                         <TextBlock
                                             Width="25"
                                             Margin="0,0,8,0"
                                             DockPanel.Dock="Left"
                                             Text="" />
 
-                                        <!--  カレンダー表示  -->
+                                -->
+                                <!--  カレンダー表示  -->
+                                <!--
                                         <Button
                                             x:Name="RootDayOrDate"
                                             Margin="0,0,10,0"
@@ -150,11 +153,15 @@
                                             ToolTip="日にち・曜日を指定できます" />
 
 
-                                        <!--  日にち・曜日設定内容表示  -->
+                                -->
+                                <!--  日にち・曜日設定内容表示  -->
+                                <!--
                                         <TextBlock MinWidth="100" Text="{Binding SelectedDaysDescription}" />
 
                                         <StackPanel Orientation="Vertical">
-                                            <!--  ボーナス設定チェック  -->
+                                -->
+                                <!--  ボーナス設定チェック  -->
+                                <!--
                                             <CheckBox
                                                 Margin="10,0,0,5"
                                                 Content="スタートアップボーナスを設定"
@@ -166,7 +173,9 @@
                                                     </TextBlock>
                                                 </ToolTipService.ToolTip>
                                             </CheckBox>
-                                            <!--  ポイント  -->
+                                -->
+                                <!--  ポイント  -->
+                                <!--
                                             <StackPanel Orientation="Horizontal">
 
                                                 <ComboBox
@@ -187,7 +196,7 @@
                                         </StackPanel>
 
                                     </DockPanel>
-                                </StackPanel>
+                                </StackPanel>-->
 
                             </StackPanel>
                         </Border>

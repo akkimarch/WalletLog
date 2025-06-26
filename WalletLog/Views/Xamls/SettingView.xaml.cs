@@ -27,8 +27,8 @@ namespace WalletLog.Views
             InitializeComponent();
 
             // binding
-            //var vm = new SettingViewModel();
-            //this.DataContext = vm;
+            var vm = new SettingViewModel();
+            this.DataContext = vm;
             //
             //// Loaded時 イベント追加 マウスダウンでPopupを閉じる
             //this.Loaded += (s, e) =>
@@ -37,5 +37,23 @@ namespace WalletLog.Views
             //};
 
         }
+
+        /// <summary>
+        /// SettingViewのクローズ時イベント
+        /// </summary>
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            // ここで何か処理を行うことができます
+            // 例えば、設定の保存など
+            // 例: SaveSettings();
+            // 例: e.Cancel = true; // クローズをキャンセルする場合
+            var vm = this.DataContext as SettingViewModel;
+            if (vm == null) return;
+
+            vm.SaveExpenceCommand.Execute(null); // 保存コマンドを呼ぶ
+
+        }
+
+
     }
 }

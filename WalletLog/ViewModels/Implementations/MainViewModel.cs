@@ -17,6 +17,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Resources;
 using WalletLog.ViewModels.Interfaces;
 using WalletLog.Views;
+using WalletLog.Models;
 
 namespace WalletLog.ViewModels
 {
@@ -41,11 +42,20 @@ namespace WalletLog.ViewModels
             OpenBankCommand = new CustomCommand(OpenBank);
             OpenReadReceiptCommand = new CustomCommand(OpenReadReceipt);
             RegistExpenceCommand = new CustomCommand(RegistExpence);
+
+            CurrentDaySet.LoadExpencesForCurrentDate(CurrentDate);
+
+            // イベント購読 他画面と連携して画面更新できるようにする
+            AppMessenger.TaskDataChanged += () =>
+            {
+                CurrentDaySet.LoadExpencesForCurrentDate(CurrentDate);
+            };
+
         }
 
         #endregion
 
-        #region public Method(IMainViewModel)
+        #region public (IMainViewModel)
 
         public CustomCommand PreviousDayCommand {get; set; }
         public CustomCommand NextDayCommand { get; set; }
@@ -63,10 +73,7 @@ namespace WalletLog.ViewModels
 
         public CustomCommand RegistExpenceCommand { get; set; }
 
-        public IDisplayDaySet CurrentDaySet { get; } = new DisplayDaySet
-        {
-            DailyConsumption = new ObservableCollection<Consumption>()
-        };
+        public DailySet CurrentDaySet { get; } = new DailySet();
 
         public DateTime CurrentDate { get; set; }
 
